@@ -1,0 +1,4 @@
+*.csv
+*.duckdb
+.idea/
+*.wal
