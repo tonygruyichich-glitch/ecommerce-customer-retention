@@ -25,3 +25,43 @@ SELECT
     COUNT(DISTINCT customer_unique_id) AS total_unique_customers,
     COUNT(customer_id) - COUNT(DISTINCT customer_unique_id) AS difference
 FROM customers;
+
+
+-- ----------------------------------------------------------------------------
+-- 2. Order Status Breakdown & Revenue Viability
+-- Objective:
+--   Identify non-viable order states (canceled, unavailable) that distort
+--   retention cohorts and monetary transactions.
+-- Decision Rule:
+--   Downstream cohort and RFM analyses will restrict records to:
+--   WHERE order_status = 'delivered'
+-- ----------------------------------------------------------------------------
+SELECT
+    order_status AS status,
+    COUNT(*) AS total_orders,
+    ROUND(
+            COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2
+    ) AS percentage
+FROM orders
+GROUP BY order_status
+ORDER BY total_orders DESC;
+
+-- ----------------------------------------------------------------------------
+-- 3. Chronological Consistency Check (Timestamp Sanity Audit)
+-- Objective:
+--   Detect corrupted timestamps where carrier dispatch or customer delivery
+--   precedes the purchase timestamp.
+-- Key Finding:
+--   165 records (0.17% of delivered orders) contain inverted timestamps.
+-- Decision Rule:
+--   Exclude these records from logistics duration models:
+--   WHERE order_delivered_customer_date >= order_purchase_timestamp
+-- ----------------------------------------------------------------------------
+SELECT
+    COUNT(*) AS corrupted_delivery_timestamps
+FROM orders
+WHERE order_status = 'delivered'
+  AND (
+    order_delivered_customer_date < order_purchase_timestamp
+        OR order_delivered_carrier_date < order_purchase_timestamp
+    );
