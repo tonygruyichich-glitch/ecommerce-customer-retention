@@ -41,7 +41,7 @@ By building an analytical pipeline in **SQL (DuckDB)**, this project demonstrate
 ### 1. Longitudinal Cohort Dynamics (RQ1)
 * **Sub-1% Retention Curve:** Across all mature cohorts (2017–2018), 30-day retention ($M_1$) consistently lands between **0.20% and 0.50%**. For example, **Cohort 2017-01** retained only **2 out of 717 customers in Month 1 (0.28%)** and **1 customer in Month 3 (0.14%)**.
 * **Marketplace Model:** Confirms the platform functions as an episodic, transactional discovery channel for durable goods rather than a recurring habit loop.
-
+![Cohort Retention Heatmap](assets/cohort_retention_heatmap.png)
 ---
 
 ### 2. Behavioral RFM Segmentation & Pareto Distribution (RQ2)
@@ -70,7 +70,7 @@ By building an analytical pipeline in **SQL (DuckDB)**, this project demonstrate
 
 * **The Warning Threshold (1–3 Days):** Average score drops by an entire point (from 4.29 to 3.29), while 1-star reviews surge nearly 4x to 25.16%.
 * **The Critical Collapse (4+ Days):** At 4–7 days late, over half of customers (58.54%) leave 1-star ratings, worsening to nearly 70% at 8+ days.
-
+![Logistics Churn Cliff](assets/delivery_delay_csat_cliff.png)
 ---
 
 ## 💡 Strategic Recommendations
